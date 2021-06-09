@@ -17,4 +17,4 @@ export default function DayListItem(props) {
       <h3 className="text--light">{formatSpots}</h3>
     </li>
   );
-}
+} 
