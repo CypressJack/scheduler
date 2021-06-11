@@ -7,31 +7,13 @@ import "components/Appointment";
 import Appointment from "components/Appointment";
 
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
-
 const appointments = [
   {
     id: 1,
     time: "12pm",
   },
   {
-    id: 4,
+    id: 2,
     time: "1pm",
     interview: {
       student: "Kobe Bryant",
@@ -40,10 +22,10 @@ const appointments = [
         name: "Lebron James",
         avatar: "https://i.imgur.com/T2WwVfS.png",
       }
-    }
+    } 
   },
   {
-    id: 2,
+    id: 3,
     time: "2pm",
     interview: {
       student: "Lydia Miller-Jones",
@@ -59,7 +41,7 @@ const appointments = [
     time: "3pm"
   },
   {
-    id: 4,
+    id: 5,
     time: "4pm",
     interview: {
       student: "Albert Einstein",
@@ -75,7 +57,17 @@ const appointments = [
 export default function Application(props) {
 
   const [currentDay, setCurrentDay] = useState("Monday");
-
+  const [days, setDays] = useState([]);
+  useEffect(()=>{
+    const url = 'http://localhost:8001/api/days';
+    axios.get(url)
+      .then(response => {
+        setDays(response.data);
+      })
+      .catch((error)=>{console.log(error)});
+    }, []);
+  
+    console.log(days);
   const listOfAppointments = appointments.map((appointment)=>{
     return (
         <Appointment
