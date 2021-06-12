@@ -26,7 +26,6 @@ export default function Application(props) {
     setState({ ...state, day })
   };
 
-
   useEffect(()=>{
     Promise.all([
       axios.get(apiRoutes.GET_DAYS),
@@ -39,8 +38,6 @@ export default function Application(props) {
     .catch((error)=> console.error(error))
   }, []);
   
-  
-
   const appointments = getAppointmentsForDay(state, state.day);
 
   const schedule = appointments.map((appointment) => {
@@ -54,11 +51,6 @@ export default function Application(props) {
       />
     );
 });
-
-
-
-
-
 
   return (
     <main className="layout">
