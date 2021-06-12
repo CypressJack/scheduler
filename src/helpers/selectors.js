@@ -1,5 +1,5 @@
 
-export default function getAppointmentsForDay(state, day) {
+export function getAppointmentsForDay(state, day) {
   let result = [];
   if (state.days.length === 0) {
     return [];
@@ -18,3 +18,24 @@ export default function getAppointmentsForDay(state, day) {
   }
   return result;
 }
+
+
+export function getInterview(state, interview) {
+  let result = {};
+  if (!interview) {
+    return null;
+  }
+
+  const interviewerId = interview.interviewer.toString();
+  const keys = Object.keys(state.interviewers);
+
+    for (const key of keys) {
+      if (interviewerId === key) {
+        result.student = interview.student;
+        result.interviewer = {
+          ...state.interviewers[key]
+        }
+    }
+  }
+  return result;
+};
