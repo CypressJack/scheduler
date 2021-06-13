@@ -7,10 +7,12 @@ import "components/Appointment";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
+
+
 const apiRoutes = {
-  GET_DAYS:         "http://localhost:8001/api/days",
-  GET_APPOINTMENTS: "http://localhost:8001/api/appointments",
-  GET_INTERVIEWERS: "http://localhost:8001/api/interviewers",
+  DAYS:         "http://localhost:8001/api/days",
+  APPOINTMENTS: "http://localhost:8001/api/appointments",
+  INTERVIEWERS: "http://localhost:8001/api/interviewers",
 }
 
 export default function Application(props) {
@@ -26,6 +28,26 @@ export default function Application(props) {
     setState({ ...state, day })
   };
 
+  const bookInterview = function(id, interview) {
+    console.log('book interview called');
+    console.log('id for bookInterview', id);
+    console.log('interview for bookInterview', interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({
+      ...state,
+      appointments
+    });
+    console.log('interview sent to api', interview);
+    return axios.put(`${apiRoutes.APPOINTMENTS}/${id}`, {interview})
+  };
+
   const appointments = getAppointmentsForDay(state, state.day);
   
   const schedule = appointments.map((appointment) => {
@@ -36,6 +58,8 @@ export default function Application(props) {
       id={appointment.id}
       time={appointment.time}
       interview={interview}
+      interviewers={state.interviewers}
+      bookInterview={bookInterview}
       />
       );
     });
@@ -43,11 +67,12 @@ export default function Application(props) {
     const interviewers = getInterviewersForDay(state, state.day);
 
 
+
     useEffect(()=>{
       Promise.all([
-        axios.get(apiRoutes.GET_DAYS),
-        axios.get(apiRoutes.GET_APPOINTMENTS),
-        axios.get(apiRoutes.GET_INTERVIEWERS)
+        axios.get(apiRoutes.DAYS),
+        axios.get(apiRoutes.APPOINTMENTS),
+        axios.get(apiRoutes.INTERVIEWERS)
       ])
       .then((all) => {
         setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
@@ -80,7 +105,7 @@ export default function Application(props) {
       <section className="schedule">
         <ul>
           { schedule }
-          <Appointment interviewers={ interviewers }key="last" time="5pm" />
+          <Appointment bookInterview={ bookInterview } interviewers={ state.interviewers }key="last" time="5pm" />
         </ul>
       </section>
     </main>

@@ -47,6 +47,10 @@ export function getInterview(state, interview) {
     return null;
   }
 
+  if (!interview.interviewer) {
+    return null;
+  }
+
   const interviewerId = interview.interviewer.toString();
   const keys = Object.keys(state.interviewers);
 
