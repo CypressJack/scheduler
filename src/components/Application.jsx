@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from 'axios';
 
 import "components/Application.scss";
@@ -6,7 +6,7 @@ import DayList from "components/DayList";
 import "components/Appointment";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
-
+import useApplicationData from "hooks/useApplicationData";
 
 
 const apiRoutes = {
@@ -17,77 +17,12 @@ const apiRoutes = {
 
 export default function Application(props) {
 
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  })
-
-  const setDay = function(day) {
-    setState({ ...state, day })
-  };
-
-  const bookInterview = function(id, interview) {
-    return axios.put(`${apiRoutes.APPOINTMENTS}/${id}`, {interview})
-    .then((res)=>{
-      const appointment = {
-        ...state.appointments[id],
-        interview: { ...interview }
-      };
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
-      setState({
-        ...state,
-        appointments
-      });
-      console.log('interview sent to api', interview);
-      return res;
-    })
-  };
-
-  const cancelInterview = function(id){
-    return axios.delete(`${apiRoutes.APPOINTMENTS}/${id}`).then((res)=>{
-      const interview = null;
-      const appointment = {
-        ...state.appointments[id],
-        interview: interview
-      };
-      const appointments = {
-        ...state.appointments,
-        [id]: appointment
-      };
-      setState({
-        ...state,
-        appointments
-      });
-    return res;
-  })};
-
-  const appointments = getAppointmentsForDay(state, state.day);
-  
-  const schedule = appointments.map((appointment) => {
-    const interview = getInterview(state, appointment.interview);
-    return (
-      <Appointment
-      key={appointment.id}
-      id={appointment.id}
-      time={appointment.time}
-      interview={interview}
-      interviewers={state.interviewers}
-      bookInterview={bookInterview}
-      onDelete={ cancelInterview }
-      />
-      );
-    });
     
-    const interviewers = getInterviewersForDay(state, state.day);
+  const { state, setState, setDay, bookInterview, cancelInterview } = useApplicationData();
+  
+  const interviewers = getInterviewersForDay(state, state.day);
 
-
-
-    useEffect(()=>{
+  useEffect(()=>{
       Promise.all([
         axios.get(apiRoutes.DAYS),
         axios.get(apiRoutes.APPOINTMENTS),
@@ -98,6 +33,23 @@ export default function Application(props) {
       })
       .catch((error)=> {console.error(error)})
     }, []);
+
+    const appointments = getAppointmentsForDay(state, state.day);
+
+    const schedule = appointments.map((appointment) => {
+      const interview = getInterview(state, appointment.interview);
+      return (
+        <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+        interviewers={state.interviewers}
+        bookInterview={bookInterview}
+        onDelete={ cancelInterview }
+        />
+        );
+      });  
     
   return (
     <main className="layout">

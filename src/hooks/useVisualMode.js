@@ -11,7 +11,7 @@ export default function useVisualMode(initial) {
       historyArray[0] = newMode;
     } else {
       historyArray.unshift(newMode);  
-    }
+    };
     setHistory(historyArray);
     setMode(newMode);
   };
@@ -25,5 +25,5 @@ export default function useVisualMode(initial) {
     };
   };
 
-  return { mode, transition, back }
+  return { mode, transition, back };
 }; 
