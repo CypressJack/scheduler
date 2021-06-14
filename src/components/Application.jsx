@@ -29,41 +29,42 @@ export default function Application(props) {
   };
 
   const bookInterview = function(id, interview) {
-    console.log('book interview called');
-    console.log('id for bookInterview', id);
-    console.log('interview for bookInterview', interview);
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    setState({
-      ...state,
-      appointments
-    });
-    console.log('interview sent to api', interview);
     return axios.put(`${apiRoutes.APPOINTMENTS}/${id}`, {interview})
+    .then((res)=>{
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview }
+      };
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+      setState({
+        ...state,
+        appointments
+      });
+      console.log('interview sent to api', interview);
+      return res;
+    })
   };
 
   const cancelInterview = function(id){
-    const interview = null;
-    const appointment = {
-      ...state.appointments[id],
-      interview: interview
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    setState({
-      ...state,
-      appointments
-    });
-    return axios.delete(`${apiRoutes.APPOINTMENTS}/${id}`)
-  };
+    return axios.delete(`${apiRoutes.APPOINTMENTS}/${id}`).then((res)=>{
+      const interview = null;
+      const appointment = {
+        ...state.appointments[id],
+        interview: interview
+      };
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+      setState({
+        ...state,
+        appointments
+      });
+    return res;
+  })};
 
   const appointments = getAppointmentsForDay(state, state.day);
   
@@ -95,7 +96,7 @@ export default function Application(props) {
       .then((all) => {
         setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
       })
-      .catch((error)=> console.error(error))
+      .catch((error)=> {console.error(error)})
     }, []);
     
   return (

@@ -7,6 +7,7 @@ import Empty from "components/Appointment/Empty";
 import useVisualMode from "hooks/useVisualMode";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
+import Error from "components/Appointment/Error";
 
 export default function Appointment(props) {
 
@@ -17,6 +18,8 @@ export default function Appointment(props) {
   const DELETING = "DELETING";
   const CONFIRM = "CONFIRM";
   const EDIT = "EDIT";
+  const ERROR_SAVE = "ERROR_SAVE";
+  const ERROR_DELETE = "ERROR_DELETE";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -27,16 +30,20 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-
-    transition(SAVING);
+    transition(SAVING, true);
     props.bookInterview(props.id, interview)
-      .then(()=>{transition(SHOW)});
+      .then(()=>{transition(SHOW)})
+      .catch(()=>{transition(ERROR_SAVE, true)});
   };
 
   const deleteAppointment = function(id){
-    transition(DELETING);
+    transition(DELETING, true);
     props.onDelete(id)
       .then(()=>{transition(EMPTY)})
+      .catch((error)=> {
+        transition(ERROR_DELETE, true);
+        console.log(error);
+      })
   };
 
   const deletePrompt = function() {
@@ -46,8 +53,6 @@ export default function Appointment(props) {
   const editPrompt = function(){
     transition(EDIT);
   };
-
-  
 
   return (
     <article className="appointment">
@@ -67,6 +72,8 @@ export default function Appointment(props) {
         {mode === SAVING && <Status message={'Saving'} />}
         {mode === DELETING && <Status message={'Deleting'}/>}
         {mode === CONFIRM && <Confirm message={'Are you sure you want to delete?'} onCancel={()=>transition(SHOW)} onConfirm={()=>deleteAppointment(props.id)} />}
+        {mode === ERROR_SAVE && <Error onClose={back} message={'Error saving interview'}/>}
+        {mode === ERROR_DELETE && <Error onClose={back} message={'Error deleting interview'}/>}
     </article>
   );
 };
