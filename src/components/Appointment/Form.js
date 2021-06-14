@@ -29,6 +29,13 @@ export default function Form(props) {
     reset();
     props.onCancel();
   };
+  console.log('name', name, 'interviewer', interviewer, 'props student', props.student, 'props interviewer', props.interviewer);
+  if (!name && props.student && props.interviewer) {
+    console.log('setname worked');
+    setName(props.student);
+    setInterviewer(props.interviewer.id);
+  }
+
   return (
 <main className="appointment__card appointment__card--create">
   <section className="appointment__card-left">
