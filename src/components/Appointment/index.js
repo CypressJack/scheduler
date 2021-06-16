@@ -5,7 +5,6 @@ import Show from "components/Appointment/Show";
 import Form from "components/Appointment/Form";
 import Empty from "components/Appointment/Empty";
 import useVisualMode from "hooks/useVisualMode";
-import useApplicationData from "hooks/useVisualMode";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
 import Error from "components/Appointment/Error";
@@ -22,11 +21,15 @@ export default function Appointment(props) {
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
 
+  
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
   
   const save = function(name, interviewer) {
+    if (!name) {
+      return null;
+    }
     const interview = {
       student: name,
       interviewer
@@ -56,7 +59,7 @@ export default function Appointment(props) {
   };
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={ props.time }/>
         {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
         {mode === CREATE && <Form onSave={save} interviewers={ props.interviewers } onCancel={back}/>}

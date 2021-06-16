@@ -9,6 +9,8 @@ export default function useApplicationData(){
     INTERVIEWERS: "http://localhost:8001/api/interviewers",
   }
   
+  const [interviewBooked, setInterviewBooked] = useState('');
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -35,7 +37,7 @@ export default function useApplicationData(){
         ...state,
         appointments
       });
-      console.log('interview sent to api', interview);
+      setInterviewBooked(interview);
       return res;
     })
   };
@@ -55,9 +57,10 @@ export default function useApplicationData(){
         ...state,
         appointments
       });
+      setInterviewBooked(id);
     return res;
   })};
 
 
-  return { state, setState, setDay, bookInterview, cancelInterview };
+  return { state, setState, setDay, bookInterview, cancelInterview, interviewBooked };
 };

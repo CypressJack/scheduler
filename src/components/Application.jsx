@@ -5,7 +5,8 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import "components/Appointment";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getInterviewersForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
 
@@ -15,24 +16,21 @@ const apiRoutes = {
   INTERVIEWERS: "http://localhost:8001/api/interviewers",
 }
 
+
 export default function Application(props) {
-
-    
-  const { state, setState, setDay, bookInterview, cancelInterview } = useApplicationData();
   
-  const interviewers = getInterviewersForDay(state, state.day);
-
-  useEffect(()=>{
-      Promise.all([
-        axios.get(apiRoutes.DAYS),
-        axios.get(apiRoutes.APPOINTMENTS),
-        axios.get(apiRoutes.INTERVIEWERS)
-      ])
-      .then((all) => {
-        setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
-      })
-      .catch((error)=> {console.error(error)})
-    });
+  const { state, setState, setDay, bookInterview, cancelInterview } = useApplicationData();
+    useEffect(()=>{
+        Promise.all([
+          axios.get(apiRoutes.DAYS),
+          axios.get(apiRoutes.APPOINTMENTS),
+          axios.get(apiRoutes.INTERVIEWERS)
+        ])
+        .then((all) => {
+          setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
+        })
+        .catch((error)=> {console.error(error)})
+      },);
 
     const appointments = getAppointmentsForDay(state, state.day);
 
