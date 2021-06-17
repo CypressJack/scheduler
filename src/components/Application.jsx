@@ -19,7 +19,7 @@ const apiRoutes = {
 
 export default function Application(props) {
   
-  const { state, setState, setDay, bookInterview, cancelInterview } = useApplicationData();
+  const { state, setState, setDay, bookInterview, cancelInterview, interviewBooked } = useApplicationData();
     useEffect(()=>{
         Promise.all([
           axios.get(apiRoutes.DAYS),
@@ -30,7 +30,7 @@ export default function Application(props) {
           setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }))
         })
         .catch((error)=> {console.error(error)})
-      },);
+      }, [interviewBooked]);
 
     const appointments = getAppointmentsForDay(state, state.day);
 
