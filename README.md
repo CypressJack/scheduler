@@ -27,9 +27,9 @@ npm install
     
 Start the dev-server in your terminal
 
-       ```sh
-npm start
-```
+
+    npm start
+
     
 The console will let you know if your connected, and if all goes well you can pull up your browser and head to:
 
