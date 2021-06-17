@@ -35,7 +35,11 @@ The console will let you know if your connected, and if all goes well you can pu
 
     localhost:xxxx//
 
-Make sure you are running a scheduler-api server on localhost:8001 for the app to work properly
+Make sure you are running a scheduler-api server on: 
+    
+    localhost:8001
+    
+for the app to work properly.
 
 And that should be it! You're free to browse and use the application
 
