@@ -2,6 +2,14 @@
 
 Interview scheduler is a fully functional interview booking app that allows you to see who has interviews scheduled and when you can schedule one of your own. It's built with the React front-end framework, express API, and Postgres SQL database.
 
+# Database API
+
+Make sure to utilize the Lighthouse Labs 'scheduler-api' with this project:
+
+    ```
+    https://github.com/lighthouse-labs/scheduler-api
+    ```
+
 # Features
 
 * Fully functional scheduler
