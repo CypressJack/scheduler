@@ -2,16 +2,8 @@ import React, { useState, useEffect } from 'react';
 import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
 
-// PROPS
-// props.name
-// props.interviewer
-// props.onCancel
-// props.interviewers
-// props.onSave
-
 export default function Form(props) {
-  // turns the object from the API into an array that can be mapped
-  // Not part of the instructions anywhere
+
   let interviewersArray = [];
   for (const interviewer in props.interviewers) {
     interviewersArray.push(props.interviewers[interviewer]);
@@ -35,7 +27,7 @@ export default function Form(props) {
       setName(props.student);
       setInterviewer(props.interviewer.id);
     }
-  },[props.edit])
+  },[props.edit]);
 
   const validate = function(){
     if(name === "") {
