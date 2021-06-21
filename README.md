@@ -6,9 +6,8 @@ Interview scheduler is a fully functional interview booking app that allows you 
 
 Make sure to utilize the Lighthouse Labs 'scheduler-api' with this project:
 
-    ```
     https://github.com/lighthouse-labs/scheduler-api
-    ```
+
 
 # Features
 
