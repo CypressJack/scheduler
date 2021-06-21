@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InterviewerList from "components/InterviewerList";
 import Button from "components/Button";
 
@@ -30,10 +30,12 @@ export default function Form(props) {
     props.onCancel();
   };
 
-  if (!name && props.student && props.interviewer) {
-    setName(props.student);
-    setInterviewer(props.interviewer.id);
-  }
+  useEffect(()=>{
+    if (!name && props.student && props.interviewer) {
+      setName(props.student);
+      setInterviewer(props.interviewer.id);
+    }
+  },[props.edit])
 
   const validate = function(){
     if(name === "") {
