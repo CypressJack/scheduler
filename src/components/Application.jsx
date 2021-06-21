@@ -5,7 +5,7 @@ import "components/Application.scss";
 import DayList from "components/DayList";
 import "components/Appointment";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 import useApplicationData from "hooks/useApplicationData";
 
 
@@ -17,6 +17,7 @@ const apiRoutes = {
 
 
 export default function Application(props) {
+
   
   const { state, setState, setDay, bookInterview, cancelInterview, interviewBooked } = useApplicationData();
     useEffect(()=>{
@@ -30,9 +31,12 @@ export default function Application(props) {
         })
         .catch((error)=> {console.error(error)})
       }, [interviewBooked, setState]);
-      console.log('pooop');
 
     const appointments = getAppointmentsForDay(state, state.day);
+
+    const interviewersByDay = getInterviewersForDay(state, state.day)
+    console.log('interviewers', state.interviewers);
+    console.log('new interviewers', interviewersByDay);
 
     const schedule = appointments.map((appointment) => {
       const interview = getInterview(state, appointment.interview);
@@ -42,7 +46,7 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
-        interviewers={state.interviewers}
+        interviewers={interviewersByDay}
         bookInterview={bookInterview}
         onDelete={ cancelInterview }
         />
