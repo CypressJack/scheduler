@@ -10,9 +10,9 @@ import useApplicationData from "hooks/useApplicationData";
 
 
 const apiRoutes = {
-  DAYS:         "http://localhost:8001/api/days",
-  APPOINTMENTS: "http://localhost:8001/api/appointments",
-  INTERVIEWERS: "http://localhost:8001/api/interviewers",
+  DAYS:         "/api/days",
+  APPOINTMENTS: "/api/appointments",
+  INTERVIEWERS: "/api/interviewers",
 }
 
 
