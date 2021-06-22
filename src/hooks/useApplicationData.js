@@ -81,5 +81,5 @@ export default function useApplicationData(){
   }, [interviewBooked, setState]);
 
 
-  return { state, setState, setDay, bookInterview, cancelInterview, interviewBooked };
+  return { state, setState, setDay, bookInterview, cancelInterview };
 };
