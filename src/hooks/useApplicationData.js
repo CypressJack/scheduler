@@ -4,9 +4,9 @@ import axios from 'axios';
 export default function useApplicationData(){
 
   const apiRoutes = {
-    DAYS:         "http://localhost:8001/api/days",
-    APPOINTMENTS: "http://localhost:8001/api/appointments",
-    INTERVIEWERS: "http://localhost:8001/api/interviewers",
+    DAYS:         "/api/days",
+    APPOINTMENTS: "/api/appointments",
+    INTERVIEWERS: "/api/interviewers",
   }
   
   const [interviewBooked, setInterviewBooked] = useState('');
