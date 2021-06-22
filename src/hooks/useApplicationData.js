@@ -61,7 +61,6 @@ export default function useApplicationData(){
     return res;
   })};
 
-  useEffect(() => {
     Promise.all([
       axios.get(apiRoutes.DAYS),
       axios.get(apiRoutes.APPOINTMENTS),
@@ -78,8 +77,6 @@ export default function useApplicationData(){
       .catch((error) => {
         console.error(error);
       });
-  }, [interviewBooked, setState]);
-
 
   return { state, setState, setDay, bookInterview, cancelInterview };
 };
