@@ -27,7 +27,7 @@ export default function Form(props) {
       setName(props.student);
       setInterviewer(props.interviewer.id);
     }
-  },[props.edit]);
+  },[props.edit, name, props.interviewer, props.student]);
 
   const validate = function(){
     if(name === "") {
