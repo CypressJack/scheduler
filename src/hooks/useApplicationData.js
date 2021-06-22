@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function useApplicationData(){
@@ -8,8 +8,6 @@ export default function useApplicationData(){
     APPOINTMENTS: "/api/appointments",
     INTERVIEWERS: "/api/interviewers",
   };
-  
-  const [interviewBooked, setInterviewBooked] = useState('');
 
   const [state, setState] = useState({
     day: "Monday",
@@ -37,7 +35,6 @@ export default function useApplicationData(){
         ...state,
         appointments
       });
-      setInterviewBooked(interview);
       return res;
     })
   };
@@ -57,10 +54,10 @@ export default function useApplicationData(){
         ...state,
         appointments
       });
-      setInterviewBooked(id);
     return res;
   })};
 
+  useEffect(()=>{
     Promise.all([
       axios.get(apiRoutes.DAYS),
       axios.get(apiRoutes.APPOINTMENTS),
@@ -77,6 +74,8 @@ export default function useApplicationData(){
       .catch((error) => {
         console.error(error);
       });
+  },[apiRoutes.DAYS, apiRoutes.INTERVIEWERS, apiRoutes.APPOINTMENTS]);
+
 
   return { state, setState, setDay, bookInterview, cancelInterview };
 };
